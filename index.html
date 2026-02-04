@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Deriv Tools - Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html">Home</a> | 
+  <a href="tools.html">Tools</a> | 
+  <a href="about.html">About</a>
+</nav>
+
+<div class="container">
+  <h1>Welcome to My Deriv Tools</h1>
+  <p>Check live price data and start trading with Deriv.</p>
+
+  <a href="https://track.deriv.com/_zuT8t8IlEmj1hit6RV3zsGNd7ZgqdRLk/1/" target="_blank" class="button">Sign Up with Deriv</a>
+
+  <h2>Live R_100 Price</h2>
+  <p id="price">Loading...</p>
+</div>
+
+<script>
+  const ws = new WebSocket("wss://ws.deriv.com/websockets/v3?app_id=125086");
+  ws.onopen = () => ws.send(JSON.stringify({ "ticks": "R_100" }));
+  ws.onmessage = msg => {
+    const data = JSON.parse(msg.data);
+    if (data.tick) document.getElementById("price").innerText = data.tick.quote;
+  };
+</script>
+</body>
+</html>
